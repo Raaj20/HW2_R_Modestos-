@@ -365,8 +365,7 @@ BCB546.</p>
 <div id="part-i---data-inspection" class="section level1">
 <h1><em>Part I - Data Inspection</em></h1>
 <p><strong>1.</strong> <strong>fang_et-al_genotypes</strong>:</p>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-fang_et_al_genotypes &lt;- read_delim(&quot;fang_et_al_genotypes.txt&quot;, 
+<pre class="r"><code>fang_et_al_genotypes &lt;- read_delim(&quot;Common_files/fang_et_al_genotypes.txt&quot;, 
     delim = &quot;\t&quot;, escape_double = FALSE, 
     trim_ws = TRUE)</code></pre>
 <pre><code>## Rows: 2782 Columns: 986
@@ -382,16 +381,14 @@ fang_et_al_genotypes &lt;- read_delim(&quot;fang_et_al_genotypes.txt&quot;,
 <li>It contains 2782 lines (excluding the header line) and 986
 columns</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_size_mb &lt;- file.size(&quot;fang_et_al_genotypes.txt&quot;) / (1024 * 1024)
+<pre class="r"><code>file_size_mb &lt;- file.size(&quot;Common_files/fang_et_al_genotypes.txt&quot;) / (1024 * 1024)
 print(paste(&quot;File size:&quot;, round(file_size_mb, 2), &quot;MB&quot;))</code></pre>
 <pre><code>## [1] &quot;File size: 10.54 MB&quot;</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>The size of the file is 10.54 MB (Megabytes)</li>
 </ol>
 <p><strong>2.</strong> <strong>snp_position</strong>:</p>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-snp_position &lt;- read_delim(&quot;snp_position.txt&quot;, 
+<pre class="r"><code>snp_position &lt;- read_delim(&quot;Common_files/snp_position.txt&quot;, 
     delim = &quot;\t&quot;, escape_double = FALSE, 
     trim_ws = TRUE)</code></pre>
 <pre><code>## Rows: 983 Columns: 15
@@ -408,8 +405,7 @@ snp_position &lt;- read_delim(&quot;snp_position.txt&quot;,
 <li>It contains 983 lines (excluding the header line) and 15
 columns</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_size_mb &lt;- file.size(&quot;snp_position.txt&quot;) / 1024 
+<pre class="r"><code>file_size_mb &lt;- file.size(&quot;Common_files/snp_position.txt&quot;) / 1024 
 print(paste(&quot;File size:&quot;, round(file_size_mb, 2), &quot;KB&quot;))</code></pre>
 <pre><code>## [1] &quot;File size: 80.82 KB&quot;</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
@@ -425,88 +421,79 @@ print(paste(&quot;File size:&quot;, round(file_size_mb, 2), &quot;KB&quot;))</co
 line) from the provided file transposed_genotypes.txt and save the new
 file as transposed_oneheader.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-lines &lt;- readLines(&quot;transposed_genotypes.txt&quot;)
+<pre class="r"><code>lines &lt;- readLines(&quot;Common_files/transposed_genotypes.txt&quot;)
 lines &lt;- lines[-c(1, 2)]
-writeLines(lines, &quot;transposed_oneheader.txt&quot;)</code></pre>
+writeLines(lines, &quot;Common_files/transposed_oneheader.txt&quot;)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Replace “Group” with “SNP_ID” in the header line of the file
 transposed_oneheader.txt and save the new file as
 transposed_editedheader.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-lines &lt;- readLines(&quot;transposed_oneheader.txt&quot;)
+<pre class="r"><code>lines &lt;- readLines(&quot;Common_files/transposed_oneheader.txt&quot;)
 lines &lt;- gsub(&quot;Group&quot;, &quot;SNP_ID&quot;, lines)
-writeLines(lines, &quot;transposed_editedheader.txt&quot;)</code></pre>
+writeLines(lines, &quot;Common_files/transposed_editedheader.txt&quot;)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Join the tab-delimited files snp_position.txt and
 transposed_editedheader.txt based on their first column and save the
 result to joined_unedited.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-snp_position &lt;- read.delim(&quot;snp_position.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
-transposed_editedheader &lt;- read.delim(&quot;transposed_editedheader.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+<pre class="r"><code>snp_position &lt;- read.delim(&quot;Common_files/snp_position.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+transposed_editedheader &lt;- read.delim(&quot;Common_files/transposed_editedheader.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
 joined_data &lt;- inner_join(snp_position, transposed_editedheader, by = colnames(snp_position)[1])
-write.table(joined_data, &quot;joined_unedited.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE)</code></pre>
+write.table(joined_data, &quot;Common_files/joined_unedited.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Remove the second column from the joined_unedited.txt and save the
 output into joined_final.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-data &lt;- fread(&quot;joined_unedited.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
+<pre class="r"><code>data &lt;- fread(&quot;Common_files/joined_unedited.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
 data &lt;- data[, -2, with = FALSE]
-fwrite(data, &quot;joined_final.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
+fwrite(data, &quot;Common_files/joined_final.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
 <div id="data-for-maize" class="section level3">
 <h3>Data for Maize</h3>
 <ol style="list-style-type: decimal">
 <li>Filter column names containing “ZMMIL” in the file joined_final.txt
 and save the output to the new file ZMMIL.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmil_dt &lt;- header_dt[grepl(&quot;ZMMIL&quot;, Column)]
-fwrite(zmmil_dt, &quot;ZMMIL.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmmil_dt &lt;- header_dt[grepl(&quot;Common_files/ZMMIL&quot;, Column)]
+fwrite(zmmil_dt, &quot;Common_files/ZMMIL.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Filter column names containing “ZMMLR” in the file joined_final.txt
 and save the output to the new file ZMMLR.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmlr_dt &lt;- header_dt[grepl(&quot;ZMMLR&quot;, Column)]
-fwrite(zmmlr_dt, &quot;ZMMLR.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmmlr_dt &lt;- header_dt[grepl(&quot;Common_files/ZMMLR&quot;, Column)]
+fwrite(zmmlr_dt, &quot;Common_files/ZMMLR.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Filter column names containing “ZMMMR” in the file joined_final.txt
 and save the output to the new file ZMMMR.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmmr_dt &lt;- header_dt[grepl(&quot;ZMMMR&quot;, Column)]
-fwrite(zmmmr_dt, &quot;ZMMMR.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmmmr_dt &lt;- header_dt[grepl(&quot;Common_files/ZMMMR&quot;, Column)]
+fwrite(zmmmr_dt, &quot;Common_files/ZMMMR.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Extract the specified columns from joined _final.txt and save the
 output in maize_data.txt in the Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-data &lt;- fread(&quot;joined_final.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
+<pre class="r"><code>data &lt;- fread(&quot;Common_files/joined_final.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
 selected_columns &lt;- c(1, 2, 3, 1224:2479, 2480:2506, 2507:2796)
 maize_data &lt;- data[, ..selected_columns]
-fwrite(maize_data, &quot;maize_data.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
+fwrite(maize_data, &quot;Common_files/maize_data.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Sort maize_data.txt numerically by column 2, i.e., chromosome
 column, while keeping the header intact and then save the sorted output
 to sorted_maize.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_path &lt;- &quot;maize_data.txt&quot;
+<pre class="r"><code>file_path &lt;- &quot;Common_files/maize_data.txt&quot;
 data &lt;- fread(file_path, sep = &quot;\t&quot;, header = TRUE)
 col_name &lt;- grep(&quot;^Chromosome$&quot;, names(data), value = TRUE)
 data[, (col_name) := suppressWarnings(as.numeric(get(col_name)))]
 data &lt;- data[!is.na(get(col_name))]
 sorted_data &lt;- data[order(get(col_name)), ]
-output_path &lt;- &quot;sorted_maize.txt&quot;
+output_path &lt;- &quot;Common_files/sorted_maize.txt&quot;
 fwrite(sorted_data, output_path, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>This loop extracts rows where column 2 equals a specific value ($i)
@@ -515,15 +502,14 @@ from sorted_maize.txt and saves the filtered data into separate files
 header in each file. The individual files are saved in
 Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_path &lt;- &quot;sorted_maize.txt&quot;
+<pre class="r"><code>file_path &lt;- &quot;Common_files/sorted_maize.txt&quot;
 data &lt;- fread(file_path, sep = &quot;\t&quot;, header = TRUE)
 # Loop through chromosome values (1 to 10) and create separate files
 for (i in 1:10) {
   # Filter rows where Chromosome == i
   subset_data &lt;- data[get(col_name) == i]
   if (nrow(subset_data) &gt; 0) {
-    output_file &lt;- sprintf(&quot;maize_chr%02d.txt&quot;, i)
+    output_file &lt;- file.path(&quot;Common_files&quot;, sprintf(&quot;maize_chr%02d.txt&quot;, i))
     fwrite(subset_data, output_file, sep = &quot;\t&quot;, quote = FALSE)
   }
 }</code></pre>
@@ -587,51 +573,46 @@ for (i in 1:10) {
 <li>Filter column names containing “ZMPBA” in the file joined_final.txt
 and save the output to the new file ZMPBA.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpba_dt &lt;- header_dt[grepl(&quot;ZMPBA&quot;, Column)]
-fwrite(zmpba_dt, &quot;ZMPBA.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmpba_dt &lt;- header_dt[grepl(&quot;Common_files/ZMPBA&quot;, Column)]
+fwrite(zmpba_dt, &quot;Common_files/ZMPBA.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Filter column names containing “ZMPIL” in the file joined_final.txt
 and save the output to the new file ZMPIL.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpil_dt &lt;- header_dt[grepl(&quot;ZMPIL&quot;, Column)]
-fwrite(zmpil_dt, &quot;ZMPIL.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmpil_dt &lt;- header_dt[grepl(&quot;Common_files/ZMPIL&quot;, Column)]
+fwrite(zmpil_dt, &quot;Common_files/ZMPIL.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Filter column names containing “ZMPJA” in the file joined_final.txt
 and save the output to the new file ZMPJA.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-header &lt;- fread(&quot;joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
+<pre class="r"><code>header &lt;- fread(&quot;Common_files/joined_final.txt&quot;, nrows = 1, header = FALSE, sep = &quot;\t&quot;)
 header_dt &lt;- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpja_dt &lt;- header_dt[grepl(&quot;ZMPJA&quot;, Column)]
-fwrite(zmpja_dt, &quot;ZMPJA.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
+zmpja_dt &lt;- header_dt[grepl(&quot;Common_files/ZMPJA&quot;, Column)]
+fwrite(zmpja_dt, &quot;Common_files/ZMPJA.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, col.names = FALSE)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Extract the specified columns from joined _final.txt and save the
 output in teosinte_data.txt in the Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-data &lt;- fread(&quot;joined_final.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
+<pre class="r"><code>data &lt;- fread(&quot;Common_files/joined_final.txt&quot;, sep = &quot;\t&quot;, header = TRUE)
 selected_columns &lt;- c(1, 2, 3, 88:987, 988:1021, 1177:1217)
 teosinte_data &lt;- data[, ..selected_columns]
-fwrite(teosinte_data, &quot;teosinte_data.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
+fwrite(teosinte_data, &quot;Common_files/teosinte_data.txt&quot;, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Sort teosinte_data.txt numerically by column 2, i.e., chromosome
 column, while keeping the header intact and then save the sorted output
 to sorted_teosinte.txt in Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_path &lt;- &quot;teosinte_data.txt&quot;
+<pre class="r"><code>file_path &lt;- &quot;Common_files/teosinte_data.txt&quot;
 data &lt;- fread(file_path, sep = &quot;\t&quot;, header = TRUE)
 col_name &lt;- grep(&quot;^Chromosome$&quot;, names(data), value = TRUE)
 data[, (col_name) := suppressWarnings(as.numeric(get(col_name)))]
 data &lt;- data[!is.na(get(col_name))]
 sorted_data &lt;- data[order(get(col_name)), ]
-output_path &lt;- &quot;sorted_teosinte.txt&quot;
+output_path &lt;- &quot;Common_files/sorted_teosinte.txt&quot;
 fwrite(sorted_data, output_path, sep = &quot;\t&quot;, quote = FALSE)</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>This loop extracts rows where column 2 equals a specific value ($i)
@@ -640,15 +621,14 @@ from sorted_teosinte.txt and saves the filtered data into separate files
 preserving the header in each file. The individual files are saved in
 Common_files.</li>
 </ol>
-<pre class="r"><code>setwd(&quot;Common_files&quot;)
-file_path &lt;- &quot;sorted_teosinte.txt&quot;
+<pre class="r"><code>file_path &lt;- &quot;Common_files/sorted_teosinte.txt&quot;
 data &lt;- fread(file_path, sep = &quot;\t&quot;, header = TRUE)
 # Loop through chromosome values (1 to 10) and create separate files
 for (i in 1:10) {
   # Filter rows where Chromosome == i
   subset_data &lt;- data[get(col_name) == i]
   if (nrow(subset_data) &gt; 0) {
-    output_file &lt;- sprintf(&quot;teosinte_chr%02d.txt&quot;, i)
+    output_file &lt;- file.path(&quot;Common_files&quot;, sprintf(&quot;teosinte_chr%02d.txt&quot;, i))
     fwrite(subset_data, output_file, sep = &quot;\t&quot;, quote = FALSE)
   }
 }</code></pre>

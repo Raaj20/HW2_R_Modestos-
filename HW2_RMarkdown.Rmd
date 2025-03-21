@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("Common_files")  # Set working directory once here
 library(readr)
 library(data.table)
 library(tidyverse)
@@ -21,8 +22,7 @@ This is an R Markdown document for the R assignment (HW2) in BCB546.
 **1.** **fang_et-al_genotypes**:
 
 ```{r inspection1}
-setwd("Common_files")
-fang_et_al_genotypes <- read_delim("fang_et_al_genotypes.txt", 
+fang_et_al_genotypes <- read_delim("Common_files/fang_et_al_genotypes.txt", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -34,8 +34,7 @@ b. It contains 2782 lines (excluding the header line) and 986 columns
 
 
 ```{r size1}
-setwd("Common_files")
-file_size_mb <- file.size("fang_et_al_genotypes.txt") / (1024 * 1024)
+file_size_mb <- file.size("Common_files/fang_et_al_genotypes.txt") / (1024 * 1024)
 print(paste("File size:", round(file_size_mb, 2), "MB"))
 ```
 
@@ -46,8 +45,7 @@ c. The size of the file is 10.54 MB (Megabytes)
 **2.** **snp_position**:
 
 ```{r inspection2}
-setwd("Common_files")
-snp_position <- read_delim("snp_position.txt", 
+snp_position <- read_delim("Common_files/snp_position.txt", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -59,8 +57,7 @@ b. It contains 983 lines (excluding the header line) and 15 columns
 
 
 ```{r size2}
-setwd("Common_files")
-file_size_mb <- file.size("snp_position.txt") / 1024 
+file_size_mb <- file.size("Common_files/snp_position.txt") / 1024 
 print(paste("File size:", round(file_size_mb, 2), "KB"))
 ```
 
@@ -78,20 +75,18 @@ c. The size of the file is 80.82 KB (Kilobytes)
 
 
 ```{r remove_twoheaders}
-setwd("Common_files")
-lines <- readLines("transposed_genotypes.txt")
+lines <- readLines("Common_files/transposed_genotypes.txt")
 lines <- lines[-c(1, 2)]
-writeLines(lines, "transposed_oneheader.txt")
+writeLines(lines, "Common_files/transposed_oneheader.txt")
 ```
 
 
 2. Replace "Group" with "SNP_ID" in the header line of the file transposed_oneheader.txt and save the new file as transposed_editedheader.txt in Common_files.
 
 ```{r edit_header}
-setwd("Common_files")
-lines <- readLines("transposed_oneheader.txt")
+lines <- readLines("Common_files/transposed_oneheader.txt")
 lines <- gsub("Group", "SNP_ID", lines)
-writeLines(lines, "transposed_editedheader.txt")
+writeLines(lines, "Common_files/transposed_editedheader.txt")
 ```
 
 
@@ -99,21 +94,19 @@ writeLines(lines, "transposed_editedheader.txt")
 
 
 ```{r join_unedited}
-setwd("Common_files")
-snp_position <- read.delim("snp_position.txt", header = TRUE, sep = "\t")
-transposed_editedheader <- read.delim("transposed_editedheader.txt", header = TRUE, sep = "\t")
+snp_position <- read.delim("Common_files/snp_position.txt", header = TRUE, sep = "\t")
+transposed_editedheader <- read.delim("Common_files/transposed_editedheader.txt", header = TRUE, sep = "\t")
 joined_data <- inner_join(snp_position, transposed_editedheader, by = colnames(snp_position)[1])
-write.table(joined_data, "joined_unedited.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+write.table(joined_data, "Common_files/joined_unedited.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 
 
 4. Remove the second column from the joined_unedited.txt and save the output into joined_final.txt in Common_files.
 
 ```{r join_final}
-setwd("Common_files")
-data <- fread("joined_unedited.txt", sep = "\t", header = TRUE)
+data <- fread("Common_files/joined_unedited.txt", sep = "\t", header = TRUE)
 data <- data[, -2, with = FALSE]
-fwrite(data, "joined_final.txt", sep = "\t", quote = FALSE)
+fwrite(data, "Common_files/joined_final.txt", sep = "\t", quote = FALSE)
 ```
 
 
@@ -124,11 +117,10 @@ fwrite(data, "joined_final.txt", sep = "\t", quote = FALSE)
 
 
 ```{r, ZMMIL}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmil_dt <- header_dt[grepl("ZMMIL", Column)]
-fwrite(zmmil_dt, "ZMMIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmmil_dt <- header_dt[grepl("Common_files/ZMMIL", Column)]
+fwrite(zmmil_dt, "Common_files/ZMMIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -136,11 +128,10 @@ fwrite(zmmil_dt, "ZMMIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r, ZMMLR}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmlr_dt <- header_dt[grepl("ZMMLR", Column)]
-fwrite(zmmlr_dt, "ZMMLR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmmlr_dt <- header_dt[grepl("Common_files/ZMMLR", Column)]
+fwrite(zmmlr_dt, "Common_files/ZMMLR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -148,11 +139,10 @@ fwrite(zmmlr_dt, "ZMMLR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r, ZMMMR}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmmmr_dt <- header_dt[grepl("ZMMMR", Column)]
-fwrite(zmmmr_dt, "ZMMMR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmmmr_dt <- header_dt[grepl("Common_files/ZMMMR", Column)]
+fwrite(zmmmr_dt, "Common_files/ZMMMR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -160,11 +150,10 @@ fwrite(zmmmr_dt, "ZMMMR.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r maize_data}
-setwd("Common_files")
-data <- fread("joined_final.txt", sep = "\t", header = TRUE)
+data <- fread("Common_files/joined_final.txt", sep = "\t", header = TRUE)
 selected_columns <- c(1, 2, 3, 1224:2479, 2480:2506, 2507:2796)
 maize_data <- data[, ..selected_columns]
-fwrite(maize_data, "maize_data.txt", sep = "\t", quote = FALSE)
+fwrite(maize_data, "Common_files/maize_data.txt", sep = "\t", quote = FALSE)
 ```
 
 
@@ -172,14 +161,13 @@ fwrite(maize_data, "maize_data.txt", sep = "\t", quote = FALSE)
 
 
 ```{r sort_maize_data}
-setwd("Common_files")
-file_path <- "maize_data.txt"
+file_path <- "Common_files/maize_data.txt"
 data <- fread(file_path, sep = "\t", header = TRUE)
 col_name <- grep("^Chromosome$", names(data), value = TRUE)
 data[, (col_name) := suppressWarnings(as.numeric(get(col_name)))]
 data <- data[!is.na(get(col_name))]
 sorted_data <- data[order(get(col_name)), ]
-output_path <- "sorted_maize.txt"
+output_path <- "Common_files/sorted_maize.txt"
 fwrite(sorted_data, output_path, sep = "\t", quote = FALSE)
 ```
 
@@ -188,15 +176,14 @@ fwrite(sorted_data, output_path, sep = "\t", quote = FALSE)
 
 
 ```{r maize_chromosomes}
-setwd("Common_files")
-file_path <- "sorted_maize.txt"
+file_path <- "Common_files/sorted_maize.txt"
 data <- fread(file_path, sep = "\t", header = TRUE)
 # Loop through chromosome values (1 to 10) and create separate files
 for (i in 1:10) {
   # Filter rows where Chromosome == i
   subset_data <- data[get(col_name) == i]
   if (nrow(subset_data) > 0) {
-    output_file <- sprintf("maize_chr%02d.txt", i)
+    output_file <- file.path("Common_files", sprintf("maize_chr%02d.txt", i))
     fwrite(subset_data, output_file, sep = "\t", quote = FALSE)
   }
 }
@@ -265,11 +252,10 @@ for (i in 1:10) {
 
 
 ```{r, ZMPBA}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpba_dt <- header_dt[grepl("ZMPBA", Column)]
-fwrite(zmpba_dt, "ZMPBA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmpba_dt <- header_dt[grepl("Common_files/ZMPBA", Column)]
+fwrite(zmpba_dt, "Common_files/ZMPBA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -277,11 +263,10 @@ fwrite(zmpba_dt, "ZMPBA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r, ZMPIL}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpil_dt <- header_dt[grepl("ZMPIL", Column)]
-fwrite(zmpil_dt, "ZMPIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmpil_dt <- header_dt[grepl("Common_files/ZMPIL", Column)]
+fwrite(zmpil_dt, "Common_files/ZMPIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -289,11 +274,10 @@ fwrite(zmpil_dt, "ZMPIL.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r, ZMPJA}
-setwd("Common_files")
-header <- fread("joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
+header <- fread("Common_files/joined_final.txt", nrows = 1, header = FALSE, sep = "\t")
 header_dt <- data.table(Index = seq_along(header), Column = as.character(unlist(header)))
-zmpja_dt <- header_dt[grepl("ZMPJA", Column)]
-fwrite(zmpja_dt, "ZMPJA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
+zmpja_dt <- header_dt[grepl("Common_files/ZMPJA", Column)]
+fwrite(zmpja_dt, "Common_files/ZMPJA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 ```
 
 
@@ -301,11 +285,10 @@ fwrite(zmpja_dt, "ZMPJA.txt", sep = "\t", quote = FALSE, col.names = FALSE)
 
 
 ```{r teosinte_data}
-setwd("Common_files")
-data <- fread("joined_final.txt", sep = "\t", header = TRUE)
+data <- fread("Common_files/joined_final.txt", sep = "\t", header = TRUE)
 selected_columns <- c(1, 2, 3, 88:987, 988:1021, 1177:1217)
 teosinte_data <- data[, ..selected_columns]
-fwrite(teosinte_data, "teosinte_data.txt", sep = "\t", quote = FALSE)
+fwrite(teosinte_data, "Common_files/teosinte_data.txt", sep = "\t", quote = FALSE)
 ```
 
 
@@ -313,14 +296,13 @@ fwrite(teosinte_data, "teosinte_data.txt", sep = "\t", quote = FALSE)
 
 
 ```{r sort_teosinte_data}
-setwd("Common_files")
-file_path <- "teosinte_data.txt"
+file_path <- "Common_files/teosinte_data.txt"
 data <- fread(file_path, sep = "\t", header = TRUE)
 col_name <- grep("^Chromosome$", names(data), value = TRUE)
 data[, (col_name) := suppressWarnings(as.numeric(get(col_name)))]
 data <- data[!is.na(get(col_name))]
 sorted_data <- data[order(get(col_name)), ]
-output_path <- "sorted_teosinte.txt"
+output_path <- "Common_files/sorted_teosinte.txt"
 fwrite(sorted_data, output_path, sep = "\t", quote = FALSE)
 ```
 
@@ -329,15 +311,14 @@ fwrite(sorted_data, output_path, sep = "\t", quote = FALSE)
 
 
 ```{r teosinte_chromosomes}
-setwd("Common_files")
-file_path <- "sorted_teosinte.txt"
+file_path <- "Common_files/sorted_teosinte.txt"
 data <- fread(file_path, sep = "\t", header = TRUE)
 # Loop through chromosome values (1 to 10) and create separate files
 for (i in 1:10) {
   # Filter rows where Chromosome == i
   subset_data <- data[get(col_name) == i]
   if (nrow(subset_data) > 0) {
-    output_file <- sprintf("teosinte_chr%02d.txt", i)
+    output_file <- file.path("Common_files", sprintf("teosinte_chr%02d.txt", i))
     fwrite(subset_data, output_file, sep = "\t", quote = FALSE)
   }
 }
